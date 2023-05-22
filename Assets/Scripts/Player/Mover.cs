@@ -9,26 +9,38 @@ namespace VladB.ZigZag.MainPlayer
         private Rigidbody _rigidbody;
 
         private DirectionContext _directionContext;
+        private Vector3 _startPosition;
 
         public void Init(Rigidbody movingRigidbody)
         {
             _rigidbody = movingRigidbody;
+            _startPosition = _rigidbody.transform.position;
 
             _directionContext = new DirectionContext(new DirectionRight());
         }
 
-        private void Update()
+        public void StartMoving()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                SwitchDirection();
-            }
+            Move();
+        }
+
+        public void ResetMoving()
+        {
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.transform.position = _startPosition;
         }
 
         public void SwitchDirection()
         {
             _directionContext.SwitchDirection();
-            _rigidbody.velocity = CurrentDirection * _speed;
+            Move();
+        }
+
+        private void Move()
+        {
+            var oldVelocity = _rigidbody.velocity;
+            var velocityInDirection = CurrentDirection * _speed;
+            _rigidbody.velocity = new Vector3(velocityInDirection.x, oldVelocity.y, velocityInDirection.z);
         }
     }
 

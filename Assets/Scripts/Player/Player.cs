@@ -6,14 +6,23 @@ namespace VladB.ZigZag.MainPlayer
     [RequireComponent(typeof(PlayerComponents))]
     public class Player : MonoBehaviour
     {
-        [SerializeField] private Mover _mover;
-        private PlayerComponents _playerComponents;
+        public PlayerComponents PlayerComponents { get; private set; }
 
         public void Init()
         {
-            _playerComponents = GetComponent<PlayerComponents>();
+            PlayerComponents = GetComponent<PlayerComponents>();
 
-            _mover.Init(_playerComponents.MainRigidBody);
+            PlayerComponents.Mover.Init(PlayerComponents.MainRigidBody);
+        }
+
+        public void StartMoving()
+        {
+            PlayerComponents.Mover.StartMoving();
+        }
+
+        public void ResetPlayer()
+        {
+            PlayerComponents.Mover.ResetMoving();
         }
     }
 }
